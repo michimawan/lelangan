@@ -26,7 +26,7 @@
             if(!$users){
             ?>
             <tr>
-                <td colspan=7>There is no user yet</td>
+                <td colspan=5>There is no user yet</td>
             </tr>
             <?php
             }

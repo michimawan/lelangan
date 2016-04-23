@@ -95,10 +95,6 @@ class UsersController extends AppController
         $this->set(['user' => $user]);
 	}
 
-	public function beforeFilter() {
-		parent::beforeFilter();
-	}
-
 	public function login()
 	{
 		$this->set('title', 'User Login');
@@ -121,6 +117,10 @@ class UsersController extends AppController
 	        }
 	        $this->Session->setFlash(__('Username or password is incorrect'), 'flashmessage', ['class' => 'danger']);
 	    }
+	}
+
+	public function beforeFilter() {
+		parent::beforeFilter();
 	}
 
 	public function logout()
