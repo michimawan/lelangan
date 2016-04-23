@@ -1,0 +1,35 @@
+# User specific & automatically generated files #
+#################################################
+/app/Config/database.php
+/app/tmp
+/lib
+/plugins
+/vendors
+/build
+/dist
+/tags
+build.properties
+build.xml
+composer.json
+CONTRIBUTING.md
+index.php
+*.mo
+
+# IDE and editor specific files #
+#################################
+.idea
+.gitattributes
+.editorconfig
+.htaccess
+.travis.yml
+
+# OS generated files #
+######################
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+Icon?
+ehthumbs.db
+Thumbs.db
