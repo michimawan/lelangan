@@ -27,14 +27,14 @@ class IdGenerator
 
 		if(count($data) == 0)
 			return $missing_number;
-		
+
 		for ($i = 0; $i < number_format($data[count($data)-1][0]['pid']); $i++) {
 			if(number_format($data[$i][0]['pid']) != $missing_number)
 				return $missing_number;
 
 			$missing_number++;
 		}
-		
+
 		return $missing_number;
 	}
 }

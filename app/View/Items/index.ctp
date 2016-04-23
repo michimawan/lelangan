@@ -1,4 +1,4 @@
-<!-- app/View/items/index.ctp -->
+<!-- app/View/Items/index.ctp -->
 
 <div class="row">
     <div class="col-xs-3 col-md-2">
