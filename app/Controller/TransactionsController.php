@@ -1,5 +1,6 @@
 <?php
 App::import('Lib', 'IdGenerator');
+App::import('Lib', 'TransactionRepository');
 
 class TransactionsController extends AppController
 {
@@ -22,11 +23,10 @@ class TransactionsController extends AppController
 	{
 		$this->set('title', 'Add Transaction');
         if($this->request->is('post') || $this->request->is('put')) {
-			$this->Transaction->create();
-			$this->request->data['Transaction']['transaction_id'] = $this->generate_transaction_id();
-			$this->request->data['Transaction']['created_at'] = '';
-			$this->request->data['Transaction']['updated_at'] = '';
-			if($this->Transaction->save($this->request->data)) {
+
+            $transactionRepo = new TransactionRepository($this->request->data);
+
+            if($transactionRepo->save()) {
 				$this->Session->setFlash('Success adding new transaction', 'flashmessage', ['class' => 'success']);
 				return $this->redirect(['action' => 'index']);
 			}
@@ -36,7 +36,8 @@ class TransactionsController extends AppController
         if(!$type)
             $this->redirect(['action' => 'index']);
 
-        $this->set(['type' => $type]);
+        $ids = $this->get_ids();
+        $this->set(['type' => $type, 'ids' => $ids]);
         $this->render('add_'.$type);
 	}
 
@@ -116,4 +117,24 @@ class TransactionsController extends AppController
 		return $pid.$missing_code;
 	}
 
+	private function generate_item_id()
+	{
+		$pid = 'PID';
+		$idgenerator = new IdGenerator('Item', 'item_id');
+
+		$missing_code = str_pad($idgenerator->get_free_number(), 4, '0', STR_PAD_LEFT);
+		
+		return $pid.$missing_code;
+	}
+
+    private function get_ids()
+    {
+        $itemId = $this->generate_item_id();
+        $transactionId = $this->generate_transaction_id();
+
+        return [
+            'item_id' => $itemId,
+            'transaction_id' => $transactionId
+        ];
+    }
 }

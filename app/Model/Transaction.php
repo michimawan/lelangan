@@ -19,6 +19,17 @@ class Transaction extends AppModel {
     // ]
 
     public $validate = [
+        'transaction_id' => [
+            'nonEmpty' => [
+                'rule' => ['notEmpty'],
+                'message' => 'Transaction ID must be filled',
+				'allowEmpty' => false
+            ],
+            'alphanumeric' => [
+                'rule' => ['alphanumeric'],
+            	'message' => 'Transaction ID is combination letter and number'
+            ]
+        ],
         'bid_price' => [
             'nonEmpty' => [
                 'rule' => ['notEmpty'],

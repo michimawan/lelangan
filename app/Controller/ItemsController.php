@@ -24,9 +24,6 @@ class ItemsController extends AppController
 		$this->set('title', 'Add Item');
 		if($this->request->is('post') || $this->request->is('put')) {
 			$this->Item->create();
-			$this->request->data['Item']['item_id'] = $this->generate_item_id();
-			$this->request->data['Item']['created_at'] = '';
-			$this->request->data['Item']['updated_at'] = '';
 			if($this->Item->save($this->request->data)) {
 				$this->Session->setFlash('Success adding new item', 'flashmessage', ['class' => 'success']);
 				return $this->redirect(['action' => 'index']);
@@ -99,16 +96,6 @@ class ItemsController extends AppController
         	throw new NotFoundException ('Item not found', 404);
 
         return $item;
-	}
-
-	private function generate_item_id()
-	{
-		$pid = 'PID';
-		$idgenerator = new IdGenerator('Item', 'item_id');
-
-		$missing_code = str_pad($idgenerator->get_free_number(), 4, '0', STR_PAD_LEFT);
-		
-		return $pid.$missing_code;
 	}
 
     public function get_item()
