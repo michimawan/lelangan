@@ -1,5 +1,6 @@
 <?php
 App::import('Lib', 'IdGenerator');
+App::import('Lib', 'Autocomplete');
 
 class ItemsController extends AppController
 {
@@ -116,13 +117,13 @@ class ItemsController extends AppController
         if($this->request->is('ajax')){
             $term = $this->params['url']['term'];
 
-            $items = $this->Item->find('all', [
-                'fields' => ['Item.id', 'Item.item_name'],
-                'conditions' => [
-                    'Item.item_name LIKE' => '%'.$term.'%',
-                    'Item.status' => 1
-                ]
-            ]);
+            $conditions = [
+                'Item.item_name LIKE' => '%'.$term.'%',
+                'Item.status' => 1
+            ];
+            $fields = ['Item.id', 'Item.item_name'];
+
+            $items = (new Autocomplete('Item', $fields, $conditions))->get();
             if($items){
                 echo json_encode($items);
             } else {

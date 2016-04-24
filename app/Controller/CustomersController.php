@@ -1,5 +1,6 @@
 <?php
 App::import('Lib', 'IdGenerator');
+App::import('Lib', 'Autocomplete');
 
 class CustomersController extends AppController
 {
@@ -100,13 +101,12 @@ class CustomersController extends AppController
         if($this->request->is('ajax')){
             $term = $this->params['url']['term'];
 
-            $customers = $this->Customer->find('all', [
-                'fields' => ['Customer.id', 'Customer.name'],
-                'conditions' => [
-                    'Customer.name LIKE' => '%'.$term.'%',
-                    'Customer.status' => 1
-                ]
-            ]);
+            $fields = ['Customer.id', 'Customer.name'];
+            $conditions = [
+                'Customer.name LIKE' => '%'.$term.'%',
+                'Customer.status' => 1
+            ];
+            $customers = (new Autocomplete('Customer', $fields, $conditions))->get();
             if($customers){
                 echo json_encode($customers);
             } else {
