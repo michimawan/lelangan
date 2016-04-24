@@ -3,11 +3,10 @@
 <div class="row">
     <div class="col-xs-3 col-md-2">
         <div class="btn-group-vertical" role="group">
-            <div class='btn-group' role='group'>
             <?php
                 echo $this->Html->link( "Add Transaction", array('action'=>'add', 'common'), array('class' => 'btn btn-default'));
+                echo $this->Html->link( "Add Transaction 3", array('action'=>'add', 'selling'), array('class' => 'btn btn-default'));
             ?>
-            </div>
         </div>
     </div>
     <div class="col-xs-12 col-md-10">
@@ -24,6 +23,7 @@
                 <th><?php echo $this->Paginator->sort('Customer.name', 'Winner');?></th>
                 <th><?php echo $this->Paginator->sort('Customer.address', 'Address');?></th>
                 <th><?php echo $this->Paginator->sort('Transaction.type', 'Auction Type');?></th>
+                <th><?php echo $this->Paginator->sort('Transaction.payed', 'Payed');?></th>
                 <th>Actions</th>
             </tr>
         </thead>
@@ -51,6 +51,7 @@
                 <td><?php echo $transaction['Customer']['name'];?></td>
                 <td><?php echo $transaction['Customer']['address'];?></td>
                 <td><?php echo $transaction['Transaction']['type'];?></td>
+                <td><?php echo $transaction['Transaction']['payed'] ? 'payed' : 'not yet';?></td>
                 <td>
                 <?php
                     echo $this->Html->link(    "Edit",   array('action'=>'edit', $transaction['Transaction']['transaction_id']), array('class' => 'btn btn-info'));

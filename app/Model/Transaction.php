@@ -12,11 +12,11 @@ class Transaction extends AppModel {
         ]
     ];
 
-    // public $hasMany = [
-    //     'Payment' => [
-    //         'className' => 'Payment',
-    //     ]
-    // ]
+    public $hasMany = [
+        'Payment' => [
+            'className' => 'Payment',
+        ]
+    ];
 
     public $validate = [
         'transaction_id' => [
