@@ -4,7 +4,7 @@ App::uses('PrepareModel', 'TransactionType');
 
 class GivingTransaction
 {
-    private $uses = ['Item', 'Transaction', 'Payment'];
+    private $uses = ['Item', 'Transaction'];
 
     public function __construct($item = [], $transaction = [])
     {
@@ -22,16 +22,9 @@ class GivingTransaction
 
         $transactionModel = new $this->uses[1]();
         $this->transaction['item_id'] = $item['Item']['id'];
-        $this->transaction['payed'] = 1;
         $transaction = (new PrepareModel(1, $this->transaction))->run();
         $transaction = $transactionModel->save($transaction);
 
-        $paymentModel = new $this->uses[2]();
-        $payment = (new PrepareModel(2))->run();
-        $payment['Payment']['transaction_id'] = $transaction['Transaction']['id'];
-        $payment['Payment']['customer_id'] = $transaction['Transaction']['customer_id'];
-        $payment['Payment']['pay'] = $transaction['Transaction']['bid_price'];
-        $payment = $paymentModel->save($payment);
-        return $item['Item']['id'] && $transaction['Transaction']['id'] && $payment['Payment']['id'];
+        return $item['Item']['id'] && $transaction['Transaction']['id'];
     }
 }
