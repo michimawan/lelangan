@@ -8,29 +8,21 @@
             echo $this->Form->input('Transaction.transaction_id', [
                 'type' => 'text',
                 'label' => 'Transaction Code',
-                'value' => $ids['transaction_id'],
+                'value' => $transaction_id,
                 'readonly',
                 'class' => 'form-control',
                 'div' => ['class' => 'form-group']
             ]);
-            echo $this->Form->input('Item.item_id', [
+            echo $this->Form->input('Transaction.item_id', [
                 'type' => 'text',
                 'label' => 'Item Code',
-                'value' => $ids['item_id'],
-                'readonly',
                 'class' => 'form-control',
-                'div' => ['class' => 'form-group']
+                'div' => ['class' => 'form-group hidden']
             ]);
             echo $this->Form->input('Item.item_name', [
                 'type' => 'text',
                 'required',
                 'label' => 'Item Name',
-                'class' => 'form-control',
-                'div' => ['class' => 'form-group']
-            ]);
-            echo $this->Form->input('Item.base_price', [
-                'type' => 'number',
-                'label' => 'Base Price',
                 'class' => 'form-control',
                 'div' => ['class' => 'form-group']
             ]);
@@ -47,7 +39,7 @@
                 'class' => 'form-control',
                 'div' => ['class' => 'form-group hidden']
             ]);
-            echo $this->Form->input('customer_name', [
+            echo $this->Form->input('Transaction.customer_name', [
                 'type' => 'text',
                 'required',
                 'label' => 'Customer Name',
@@ -80,5 +72,13 @@
         'controller' => 'customers',
         'action' => 'get_customer',
         'fields' => json_encode(['id', 'name'])
+    ]);
+    echo $this->element('autocomplete', [
+        'firstId' => 'ItemItemName',
+        'secondId' => 'TransactionItemId',
+        'model' => 'Item',
+        'controller' => 'items',
+        'action' => 'get_item',
+        'fields' => json_encode(['id', 'item_name'])
     ]);
 ?>

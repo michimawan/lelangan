@@ -8,15 +8,7 @@
             echo $this->Form->input('Transaction.transaction_id', [
                 'type' => 'text',
                 'label' => 'Transaction Code',
-                'value' => $ids['transaction_id'],
-                'readonly',
-                'class' => 'form-control',
-                'div' => ['class' => 'form-group']
-            ]);
-            echo $this->Form->input('Item.item_id', [
-                'type' => 'text',
-                'label' => 'Item Code',
-                'value' => $ids['item_id'],
+                'value' => $transaction_id,
                 'readonly',
                 'class' => 'form-control',
                 'div' => ['class' => 'form-group']

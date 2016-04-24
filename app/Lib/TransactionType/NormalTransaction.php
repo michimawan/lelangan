@@ -4,11 +4,10 @@ App::uses('PrepareModel', 'TransactionType');
 
 class NormalTransaction
 {
-    private $uses = ['Item', 'Transaction'];
+    private $uses = ['Transaction'];
 
-    public function __construct($item = [], $transaction = [])
+    public function __construct($transaction = [])
     {
-        $this->item = $item;
         $this->transaction = $transaction;
 
         foreach($this->uses as $use)
@@ -17,14 +16,9 @@ class NormalTransaction
 
     public function save()
     {
-        $itemModel = new $this->uses[0]();
-        $item = (new PrepareModel(0, $this->item))->run();
-        $item = $itemModel->save($item);
-
-        $transactionModel = new $this->uses[1]();
-        $this->transaction['item_id'] = $item['Item']['id'];
+        $transactionModel = new $this->uses[0]();
         $transaction = (new PrepareModel(1, $this->transaction))->run();
         $transaction = $transactionModel->save($transaction);
-        return $item['Item']['id'] && $transaction['Transaction']['id'];
+        return $transaction['Transaction']['id'];
     }
 }

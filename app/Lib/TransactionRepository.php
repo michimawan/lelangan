@@ -10,7 +10,6 @@ class TransactionRepository
 
     public function __construct($data = [])
     {
-        $this->item = isset($data['Item']) ? $data['Item']: [];
         $this->transaction = isset($data['Transaction']) ? $data['Transaction'] : [];
     }
 
@@ -18,11 +17,11 @@ class TransactionRepository
     {
         switch ($this->transaction['type']) {
             case 'common' :
-                return (new NormalTransaction($this->item, $this->transaction))->save();
+                return (new NormalTransaction($this->transaction))->save();
             case 'selling' :
-                return (new SellingTransaction($this->item, $this->transaction))->save();
+                return (new SellingTransaction($this->transaction))->save();
             case 'giving' :
-                return (new GivingTransaction($this->item, $this->transaction))->save();
+                return (new GivingTransaction($this->transaction))->save();
             default :
                 return false;
         }

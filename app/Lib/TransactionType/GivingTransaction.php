@@ -6,9 +6,8 @@ class GivingTransaction
 {
     private $uses = ['Item', 'Transaction'];
 
-    public function __construct($item = [], $transaction = [])
+    public function __construct($transaction = [])
     {
-        $this->item = $item;
         $this->transaction = $transaction;
 
         foreach($this->uses as $use)
@@ -18,7 +17,7 @@ class GivingTransaction
     public function save()
     {
         $itemModel = new $this->uses[0]();
-        $item = $itemModel->findByItemId($this->item['item_id']);
+        $item = $itemModel->findByItemId('PID0001');
 
         $transactionModel = new $this->uses[1]();
         $this->transaction['item_id'] = $item['Item']['id'];

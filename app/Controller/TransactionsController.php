@@ -36,13 +36,7 @@ class TransactionsController extends AppController
         if(!$type)
             $this->redirect(['action' => 'index']);
 
-        if($type == 'giving') {
-            $ids = $this->get_giving_ids();
-            $this->set(['type' => $type, 'ids' => $ids]);
-            return $this->render('add_'.$type);
-        }
-        $ids = $this->get_ids();
-        $this->set(['type' => $type, 'ids' => $ids]);
+        $this->set(['type' => $type, 'transaction_id' => $this->generate_transaction_id()]);
         return $this->render('add_'.$type);
 	}
 
@@ -121,36 +115,4 @@ class TransactionsController extends AppController
 
 		return $pid.$missing_code;
 	}
-
-	private function generate_item_id()
-	{
-		$pid = 'PID';
-		$idgenerator = new IdGenerator('Item', 'item_id');
-
-		$missing_code = str_pad($idgenerator->get_free_number(), 4, '0', STR_PAD_LEFT);
-		
-		return $pid.$missing_code;
-	}
-
-    private function get_ids()
-    {
-        $itemId = $this->generate_item_id();
-        $transactionId = $this->generate_transaction_id();
-
-        return [
-            'item_id' => $itemId,
-            'transaction_id' => $transactionId
-        ];
-    }
-
-    private function get_giving_ids()
-    {
-        $item = $this->Transaction->Item->findByItemName('persembahan jemaat');
-        $transactionId = $this->generate_transaction_id();
-
-        return [
-            'item_id' => $item['Item']['item_id'],
-            'transaction_id' => $transactionId
-        ];
-    }
 }
