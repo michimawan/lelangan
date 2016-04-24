@@ -1,4 +1,4 @@
-<!-- app/View/Transactions/add_common.ctp -->
+<!-- app/View/Transactions/add_selling.ctp -->
 
 <div class="row">
     <div class="col-xs-12 col-md-10">
