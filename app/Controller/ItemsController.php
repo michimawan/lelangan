@@ -110,4 +110,26 @@ class ItemsController extends AppController
 		return $pid.$missing_code;
 	}
 
+    public function get_item()
+    {
+        $this->autoRender = false;
+        if($this->request->is('ajax')){
+            $term = $this->params['url']['term'];
+
+            $items = $this->Item->find('all', [
+                'fields' => ['Item.id', 'Item.item_name'],
+                'conditions' => [
+                    'Item.item_name LIKE' => '%'.$term.'%',
+                    'Item.status' => 1
+                ]
+            ]);
+            if($items){
+                echo json_encode($items);
+            } else {
+                echo "no";
+            }
+        } else {
+            $this->redirect(array('action' => 'index'));
+        }
+    }
 }

@@ -5,10 +5,11 @@ class IdGenerator
 {
 	private $uses = array();
 
-	public function __construct($model, $field)
+	public function __construct($model, $field, $length = 4)
 	{
 		$this->uses[] = $model;
 		$this->field = $field;
+        $this->length = $length;
 
 		App::import('Model', $this->uses[0]);
 	}
@@ -16,7 +17,7 @@ class IdGenerator
 	private function getDbData()
 	{
 		$model = new $this->uses[0]();
-		$data = $model->find('all', array('fields' => 'SUBSTRING(' . $this->field . ', 4) AS pid', 'order' => 'pid'));
+        $data = $model->find('all', array('fields' => 'SUBSTRING(' . $this->field . ', '. $this->length .') AS pid', 'order' => 'pid'));
 		return $data;
 	}
 

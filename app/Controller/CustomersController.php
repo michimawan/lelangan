@@ -93,4 +93,27 @@ class CustomersController extends AppController
 
 	    return parent::isAuthorized($user);
 	}
+
+    public function get_customer()
+    {
+        $this->autoRender = false;
+        if($this->request->is('ajax')){
+            $term = $this->params['url']['term'];
+
+            $customers = $this->Customer->find('all', [
+                'fields' => ['Customer.id', 'Customer.name'],
+                'conditions' => [
+                    'Customer.name LIKE' => '%'.$term.'%',
+                    'Customer.status' => 1
+                ]
+            ]);
+            if($customers){
+                echo json_encode($customers);
+            } else {
+                echo "no";
+            }
+        } else {
+            $this->redirect(array('action' => 'index'));
+        }
+    }
 }

@@ -1,4 +1,4 @@
 <!-- app/Elements/footer.ctp -->
 	<div class="container">
-		<p>&copy2015 oleh TI UKDW</p>
+		<p>&copy2016 oleh TI UKDW</p>
 	</div>
