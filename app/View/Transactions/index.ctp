@@ -6,6 +6,7 @@
             <?php
                 echo $this->Html->link( "Add Transaction", array('action'=>'add', 'common'), array('class' => 'btn btn-default'));
                 echo $this->Html->link( "Add Transaction 3", array('action'=>'add', 'selling'), array('class' => 'btn btn-default'));
+                echo $this->Html->link( "Add Transaction 4", array('action'=>'add', 'giving'), array('class' => 'btn btn-default'));
             ?>
         </div>
     </div>

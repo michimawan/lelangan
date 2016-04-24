@@ -18,6 +18,8 @@ class TransactionRepository
                 return $this->normalTransaction();
             case 'selling' :
                 return $this->sellingTransaction();
+            case 'giving' :
+                return $this->givingTransaction();
             default :
                 return false;
         }
@@ -73,6 +75,30 @@ class TransactionRepository
         $payment['Payment']['transaction_id'] = $transaction['Transaction']['id'];
         $payment['Payment']['customer_id'] = $transaction['Transaction']['customer_id'];
         $payment['Payment']['pay'] = $transaction['Transaction']['bid_price'];
-        return $item['Item']['id'] && $transaction['Transaction']['id'];
+        $payment = $paymentModel->save($payment);
+        return $item['Item']['id'] && $transaction['Transaction']['id'] && $payment['Payment']['id'];
+    }
+
+    private function givingTransaction() {
+        App::import('Model', $this->uses[0]);
+        App::import('Model', $this->uses[1]);
+        App::import('Model', $this->uses[2]);
+
+        $itemModel = new $this->uses[0]();
+        $item = $itemModel->findByItemId($this->item['item_id']);
+
+        $transactionModel = new $this->uses[1]();
+        $this->transaction['item_id'] = $item['Item']['id'];
+        $this->transaction['payed'] = 1;
+        $transaction = $this->prepareModel(1, $this->transaction);
+        $transaction = $transactionModel->save($transaction);
+
+        $paymentModel = new $this->uses[2]();
+        $payment = $this->prepareModel(2);
+        $payment['Payment']['transaction_id'] = $transaction['Transaction']['id'];
+        $payment['Payment']['customer_id'] = $transaction['Transaction']['customer_id'];
+        $payment['Payment']['pay'] = $transaction['Transaction']['bid_price'];
+        $payment = $paymentModel->save($payment);
+        return $item['Item']['id'] && $transaction['Transaction']['id'] && $payment['Payment']['id'];
     }
 }

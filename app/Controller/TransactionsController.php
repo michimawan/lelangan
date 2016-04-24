@@ -36,9 +36,14 @@ class TransactionsController extends AppController
         if(!$type)
             $this->redirect(['action' => 'index']);
 
+        if($type == 'giving') {
+            $ids = $this->get_giving_ids();
+            $this->set(['type' => $type, 'ids' => $ids]);
+            return $this->render('add_'.$type);
+        }
         $ids = $this->get_ids();
         $this->set(['type' => $type, 'ids' => $ids]);
-        $this->render('add_'.$type);
+        return $this->render('add_'.$type);
 	}
 
 	public function delete($transaction_id)
@@ -134,6 +139,17 @@ class TransactionsController extends AppController
 
         return [
             'item_id' => $itemId,
+            'transaction_id' => $transactionId
+        ];
+    }
+
+    private function get_giving_ids()
+    {
+        $item = $this->Transaction->Item->findByItemName('persembahan jemaat');
+        $transactionId = $this->generate_transaction_id();
+
+        return [
+            'item_id' => $item['Item']['item_id'],
             'transaction_id' => $transactionId
         ];
     }
