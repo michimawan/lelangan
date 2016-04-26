@@ -13,7 +13,18 @@ class Payment extends AppModel {
     ];
 
     public $validate = [
-        'pay' => [
+        'transaction_id' => [
+            'nonEmpty' => [
+                'rule' => ['notEmpty'],
+                'message' => 'Transaction ID must be filled',
+				'allowEmpty' => false
+            ],
+            'alphanumeric' => [
+            	'rule' => ['alphanumeric'],
+            	'message' => 'Transaction ID is combination letter and number'
+            ]
+        ],
+        'customer_id' => [
             'nonEmpty' => [
                 'rule' => ['notEmpty'],
                 'message' => 'Transaction ID must be filled',
@@ -21,7 +32,18 @@ class Payment extends AppModel {
             ],
             'numeric' => [
             	'rule' => ['numeric'],
-            	'message' => 'Item Buy Price must be filled by number'
+            	'message' => 'Customer ID must be filled by number'
+            ]
+        ],
+        'pay' => [
+            'nonEmpty' => [
+                'rule' => ['notEmpty'],
+                'message' => 'Payment must be filled',
+				'allowEmpty' => false
+            ],
+            'numeric' => [
+            	'rule' => ['numeric'],
+            	'message' => 'Payment must be filled by number'
             ]
         ]
     ];
