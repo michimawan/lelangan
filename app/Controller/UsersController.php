@@ -20,6 +20,11 @@ class UsersController extends AppController
 	{
 		$this->set('title', 'Add User');
 		if($this->request->is('post') || $this->request->is('put')) {
+            if($this->request->data['User']['password'] != $this->request->data['User']['confirm_password']) {
+                $this->Session->setFlash('Failed to add user', 'flashmessage', ['class' => 'danger']);
+                return  $this->redirect(['action' => 'index']);
+            }
+
 			$this->User->create();
 			$this->request->data['User']['created_at'] = '';
 			$this->request->data['User']['updated_at'] = '';

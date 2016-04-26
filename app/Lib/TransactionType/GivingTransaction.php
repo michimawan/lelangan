@@ -17,7 +17,7 @@ class GivingTransaction
     public function save()
     {
         $itemModel = new $this->uses[0]();
-        $item = $itemModel->findByItemId('PID0001');
+        $item = $itemModel->findByItemId('IID0001');
 
         $transactionModel = new $this->uses[1]();
         $this->transaction['item_id'] = $item['Item']['id'];

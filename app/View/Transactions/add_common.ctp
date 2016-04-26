@@ -15,6 +15,7 @@
             ]);
             echo $this->Form->input('Transaction.item_id', [
                 'type' => 'text',
+                'required',
                 'label' => 'Item Code',
                 'class' => 'form-control',
                 'div' => ['class' => 'form-group hidden']
@@ -36,6 +37,7 @@
             ]);
             echo $this->Form->input('Transaction.customer_id', [
                 'type' => 'number',
+                'required',
                 'class' => 'form-control',
                 'div' => ['class' => 'form-group hidden']
             ]);

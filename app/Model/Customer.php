@@ -34,5 +34,12 @@ class Customer extends AppModel {
             	'message' => 'Customer phone number must be number'
             )
         ),
+        'group_id' => array(
+            'nonEmpty' => array(
+                'rule' => array('notEmpty'),
+                'message' => 'Customer group must be filled',
+				'allowEmpty' => false
+            ),
+        ),
 	);
 }

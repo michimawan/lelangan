@@ -19,6 +19,20 @@ class Transaction extends AppModel {
     ];
 
     public $validate = [
+        'item_id' => [
+            'nonEmpty' => [
+                'rule' => ['notEmpty'],
+                'message' => 'Item ID must be filled',
+				'allowEmpty' => false
+            ],
+        ],
+        'customer_id' => [
+            'nonEmpty' => [
+                'rule' => ['notEmpty'],
+                'message' => 'Customer ID must be filled',
+				'allowEmpty' => false
+            ],
+        ],
         'transaction_id' => [
             'nonEmpty' => [
                 'rule' => ['notEmpty'],

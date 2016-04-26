@@ -16,7 +16,6 @@
             echo $this->Form->input('username', array('label' => 'Username', 'class' => 'form-control', 'div' => array('class' => 'form-group')));
             echo $this->Form->input('display_name', array('label' => 'Full Name', 'class' => 'form-control', 'div' => array('class' => 'form-group')));
             echo $this->Form->input('password', array('type' => 'password', 'label' => 'Password', 'class' => 'form-control', 'div' => array('class' => 'form-group')));
-            echo $this->Form->input('confirm_password', array('type' => 'password', 'id' => 'confirm_password', 'label' => 'Confirmation Password', 'required' => true, 'class' => 'form-control', 'div' => array('class' => 'form-group')));
             echo $this->Form->input('role', array(
                 'options' => array( 'admin' => 'Admin', 'staff' => 'Staff'),
                 'label' => 'Role',

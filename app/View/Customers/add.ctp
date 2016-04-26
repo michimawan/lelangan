@@ -11,6 +11,7 @@
             echo $this->Form->input('group_id', [
                 'type' => 'select',
                 'options' => $groups,
+                'required',
                 'div' => ['class' => 'form-group'],
                 'class' => 'form-control'
             ]);

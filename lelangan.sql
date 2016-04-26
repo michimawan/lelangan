@@ -82,7 +82,7 @@ CREATE TABLE `items` (
 --
 
 INSERT INTO `items` (`id`, `item_id`, `item_name`, `base_price`, `stock`, `status`, `created_at`, `updated_at`) VALUES
-(1, 'PID0001', 'persembahan jemaat', 0, 1, 1, '2016-04-24 11:22:27', '2016-04-25 00:03:04');
+(1, 'IID0001', 'persembahan jemaat', 0, 1, 1, '2016-04-24 11:22:27', '2016-04-25 00:03:04');
 
 -- --------------------------------------------------------
 
@@ -178,8 +178,7 @@ CREATE TABLE `users` (
 INSERT INTO `users` (`id`, `username`, `display_name`, `role`, `password`, `status`, `created_at`, `updated_at`) VALUES
 (1, 'admin', 'me admin', 'admin', 'cfaf9aa274295b2565dea0b0c67613f4bac4771e', 1, '2016-04-23 06:00:29', '2016-04-23 06:04:40'),
 (2, 'user1', 'user1 selalu user 1', 'staff', 'cfaf9aa274295b2565dea0b0c67613f4bac4771e', 0, '2016-04-23 06:02:39', '2016-04-23 06:13:31'),
-(3, 'user2', 'user2 is me', 'staff', 'cfaf9aa274295b2565dea0b0c67613f4bac4771e', 1, '2016-04-23 06:15:54', '2016-04-23 06:15:54'),
-(4, 'user3', 'user3 buatan user2', 'staff', 'cfaf9aa274295b2565dea0b0c67613f4bac4771e', 0, '2016-04-23 06:17:17', '2016-04-23 14:08:27');
+(3, 'user2', 'user2 is me', 'staff', 'cfaf9aa274295b2565dea0b0c67613f4bac4771e', 1, '2016-04-23 06:15:54', '2016-04-23 06:15:54');
 
 --
 -- Indexes for dumped tables

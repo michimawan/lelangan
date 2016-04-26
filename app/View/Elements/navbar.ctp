@@ -37,8 +37,9 @@ $user = $this->Auth->user();
 				<span class="icon-bar"></span>
 				<span class="icon-bar"></span>
 			</button>
-			<div>
-                <?php echo $this->Html->image('...', array('class' => 'navbar-brand img-responsive', 'alt' => 'GKJ Gayamprit', 'title' => 'GKJ Gayamprit'));?>
+			<div class="navbar-brand">
+                <img src="http://fakeimg.pl/50x20/000000/?text=GKJ Gayamprit" class="img-responsive" alt="GKJ Gayamprit" title="GKJ Gayamprit">
+                <?php // echo $this->Html->image('...', array('class' => 'navbar-brand img-responsive', 'alt' => 'GKJ Gayamprit', 'title' => 'GKJ Gayamprit'));?>
 			</div>
 		</div>
 
