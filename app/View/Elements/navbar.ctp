@@ -6,11 +6,13 @@ $users = '';
 $customers= '';
 $items= '';
 $transactions= '';
+$payments= '';
 $logouturl= $this->Html->url(array('controller'=>'users', 'action'=>'logout'));
 $userurl= $this->Html->url(array('controller'=>'users', 'action'=>'index'));
 $customerurl= $this->Html->url(array('controller'=>'customers', 'action'=>'index'));
 $itemurl= $this->Html->url(array('controller'=>'items', 'action'=>'index'));
 $transactionurl= $this->Html->url(array('controller'=>'transactions', 'action'=>'index'));
+$paymenturl= $this->Html->url(array('controller'=>'payments', 'action'=>'index'));
 
 if($menu === 'mains') {
 	$main = 'class="active"';
@@ -22,6 +24,8 @@ if($menu === 'mains') {
 	$items = 'class="active"';
 } else if ($menu === 'transactions') {
 	$transactions = 'class="active"';
+} else if ($menu === 'payments') {
+	$payments = 'class="active"';
 }
 ?>
 
@@ -57,6 +61,9 @@ $user = $this->Auth->user();
         		</li>
         		<li <?php echo $transactions ?> >
         			<a href="<?php echo $transactionurl; ?>">Transaction</a>
+        		</li>
+        		<li <?php echo $payments ?> >
+        			<a href="<?php echo $paymenturl; ?>">Payment</a>
         		</li>
                 <?php } ?>
 			</ul>

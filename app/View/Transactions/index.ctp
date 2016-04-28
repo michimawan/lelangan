@@ -45,7 +45,7 @@
             ?>
             <tr>
                 <td><?php echo $count; ?></td>
-                <td><?php echo $transaction['Transaction']['transaction_id'];?></td>
+                <td><?php echo $this->Html->link($transaction['Transaction']['transaction_id'], ['action' => 'show', $transaction['Transaction']['transaction_id']]);?></td>
                 <td><?php echo $transaction['Item']['item_name'];?></td>
                 <td><?php echo $transaction['Item']['base_price'];?></td>
                 <td><?php echo $transaction['Transaction']['bid_price'];?></td>
