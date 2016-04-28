@@ -169,7 +169,8 @@ class TransactionsController extends AppController
 
             $conditions = [
                 'Transaction.transaction_id LIKE' => '%'.$term.'%',
-                'Transaction.status' => 1
+                'Transaction.status' => 1,
+                'Transaction.payed' => 0
             ];
             $fields = ['Transaction.id',
                 'Transaction.transaction_id',
