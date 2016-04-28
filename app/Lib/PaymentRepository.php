@@ -22,11 +22,11 @@ class PaymentRepository
         $transactionModel = new $this->uses[0]();
 
         $total_payment = $this->countTotalPayment($paymentModel, $this->payment['transaction_id']);
-        $total_payment += $this->payment['pay'];
+        $current_payment = $transactionModel->findById($this->payment['transaction_id']);
+        $total_payment = $current_payment['Transaction']['payment_count'] + $this->payment['pay'];
 
-        if($total_payment >= $this->transaction['bid_price']) {
-            $updateStatus = $this->updateTransactionPayedStatus($transactionModel);
-        }
+        $status = $total_payment >= $this->transaction['bid_price'] ? 1 : 0;
+        $this->updateTransactionPayedStatus($transactionModel, $total_payment, $status);
 
         //save model payment
         $this->payment['payment_id'] = $this->generate_payment_id();
@@ -52,18 +52,44 @@ class PaymentRepository
         $transaction = $transactionModel->findById($deletedPayment['Payment']['transaction_id']);
 
         if($this->canUpdatePayedStatusToUnpaid($deletedPayment)) {
-            $transactionModel->id = $transaction['Transaction']['id'];
-            $transactionModel->saveField('payed', 0);
+            try{
+                $transactionModel->getDataSource();
+                $transactionModel->id = $transaction['Transaction']['id'];
+
+                $payment_count = $transaction['Transaction']['payment_count'] - $deletedPayment['Payment']['pay'];
+                $transactionModel->saveField('payment_count', $payment_count);
+                $transactionModel->saveField('payed', 0);
+                $transactionModel->commit();
+            } catch (Exception $e) {
+                $transactionModel->rollback();
+            }
         }
 
-        $paymentModel->id = $deletedPayment['Payment']['id'];
-        return $paymentModel->saveField('status', 0);
+        try{
+            $paymentModel->getDataSource();
+            $paymentModel->id = $deletedPayment['Payment']['id'];
+            $paymentModel->saveField('status', 0);
+            $paymentModel->commit();
+            return true;
+        } catch (Exception $e) {
+            $paymentModel->rollback();
+            return false;
+        }
     }
 
-    private function updateTransactionPayedStatus($transactionModel)
+    private function updateTransactionPayedStatus($transactionModel, $payment_count = 0, $status = 0)
     {
         $transactionModel->id = $this->payment['transaction_id'];
-        return $transactionModel->saveField('payed', 1);
+        try {
+            $transactionModel->getDataSource();
+            $transactionModel->saveField('payed', $status);
+            $transactionModel->saveField('payment_count', $payment_count);
+            $transactionModel->commit();
+            return true;
+        } catch (Exception $e) {
+            $transactionModel->rollback();
+            return false;
+        }
     }
 
     private function canUpdatePayedStatusToUnpaid($deletedPayment)
