@@ -21,7 +21,6 @@ class PaymentRepository
         $paymentModel = new $this->uses[1]();
         $transactionModel = new $this->uses[0]();
 
-        $total_payment = $this->countTotalPayment($paymentModel, $this->payment['transaction_id']);
         $current_payment = $transactionModel->findById($this->payment['transaction_id']);
         $total_payment = $current_payment['Transaction']['payment_count'] + $this->payment['pay'];
 
@@ -96,32 +95,11 @@ class PaymentRepository
     {
         $paymentModel = new $this->uses[1]();
         $transactionModel = new $this->uses[0]();
-        $total_payment = $this->countTotalPayment($paymentModel, $deletedPayment['Payment']['transaction_id']);
+        $total_payment = $transactionModel->find('first', ['conditions' => ['Transaction.id' => $deletedPayment['Payment']['transaction_id']]]);
         $transaction = $transactionModel->findById($deletedPayment['Payment']['transaction_id']);
 
         return $transaction['Transaction']['payed'] &&
-            (($total_payment - $deletedPayment['Payment']['pay']) < $transaction['Transaction']['bid_price']);
-    }
-
-    private function countTotalPayment($paymentModel, $transaction_id)
-    {
-        $payments = $paymentModel->find('all', [
-            'conditions' => [
-                'Payment.status' => 1,
-                'Payment.transaction_id' => $transaction_id
-            ],
-            'fields' => [
-                'Payment.pay'
-            ],
-            'recursive' => -1
-        ]);
-
-        $total_payment = 0;
-        foreach($payments as $payment) {
-            $total_payment += $payment['Payment']['pay'];
-        }
-
-        return $total_payment;
+            (($total_payment['Transaction']['payment_count'] - $deletedPayment['Payment']['pay']) < $transaction['Transaction']['bid_price']);
     }
 
 	private function generate_payment_id()
