@@ -9,6 +9,8 @@ class PaymentRepository
 
     public function __construct($data = [])
     {
+        // debug($data);
+        // $this->_stop();
         $this->payment = isset($data['Payment']) ? $data['Payment'] : [];
         $this->transaction = isset($data['Transaction']) ? $data['Transaction'] : [];
 
@@ -27,7 +29,6 @@ class PaymentRepository
         $status = $total_payment >= $this->transaction['bid_price'] ? 1 : 0;
         $this->updateTransactionPayedStatus($transactionModel, $total_payment, $status);
 
-        //save model payment
         $this->payment['payment_id'] = $this->generate_payment_id();
         $payment = (new PrepareModel(2, $this->payment))->run();
         $payment = $paymentModel->save($payment);
@@ -37,6 +38,23 @@ class PaymentRepository
 
     public function update()
     {
+        $paymentModel = new $this->uses[1]();
+        $transactionModel = new $this->uses[0]();
+
+        $new_amount = $this->payment['pay'];
+        $payment_id = $this->payment['id'];
+        $transaction_id = $this->payment['transaction_id'];
+
+        $transaction = $transactionModel->findById($transaction_id);
+        $payment = $paymentModel->findById($payment_id);
+        $current_payment = $transaction['Transaction']['payment_count'] - $payment['Payment']['pay'];
+
+        $total_payment = $current_payment + $new_amount;
+        $status = $total_payment >= $this->transaction['bid_price'] ? 1 : 0;
+        $this->updateTransactionPayedStatus($transactionModel, $total_payment, $status);
+
+        $paymentModel->id = $payment_id;
+        return $paymentModel->saveField('pay', $new_amount);
     }
 
     public function delete($payment_id = null)

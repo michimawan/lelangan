@@ -45,7 +45,7 @@
                 <td><?php echo $payment['Payment']['pay']?></td>
                 <td>
                 <?php
-            // echo $this->Html->link(    "Edit",   array('action'=>'edit', $payment['Payment']['payment_id']), array('class' => 'btn btn-info'));
+                    echo $this->Html->link(    "Edit",   array('action'=>'edit', $payment['Payment']['payment_id']), array('class' => 'btn btn-info'));
                     echo $this->Form->postLink(    "Delete", array('action'=>'delete', $payment['Payment']['payment_id']), array('class' => 'btn btn-danger', 'confirm'=>'Are you sure want to delete '.$payment['Payment']['payment_id']));
                 ?>
                 </td>

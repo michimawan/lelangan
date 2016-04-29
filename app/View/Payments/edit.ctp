@@ -5,6 +5,13 @@
         <?php echo $this->Form->create('Payment');?>
             <h1><?php echo __('Edit Payment'); ?></h1>
             <?php
+            echo $this->Form->input('Payment.id', [
+                'type' => 'text',
+                'readonly',
+                'required',
+                'class' => 'form-control',
+                'div' => ['class' => 'form-group hidden']
+            ]);
             echo $this->Form->input('Payment.transaction_id', [
                 'type' => 'text',
                 'readonly',
