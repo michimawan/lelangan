@@ -1,5 +1,9 @@
 <!-- app/View/Transactions/index.ctp -->
 
+<?php
+echo $this->element('filter', $filters);
+?>
+
 <div class="row">
     <div class="col-xs-3 col-md-2">
         <div class="btn-group-vertical" role="group">

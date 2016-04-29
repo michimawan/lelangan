@@ -17,7 +17,7 @@ class TransactionsController extends AppController
             'conditions' => ['NOT' => ['Transaction.status' => '0']]
         ];
         $transactions = $this->paginate('Transaction');
-        $this->set(['transactions' => $transactions]);
+        $this->set(['transactions' => $transactions, 'filters' => $this->getFilters()]);
     }
 
     public function add($type = null)
@@ -188,5 +188,53 @@ class TransactionsController extends AppController
         } else {
             $this->redirect(array('action' => 'index'));
         }
+    }
+
+    public function filter()
+    {
+        $filter = $this->params['url']['filter'];
+        $text = $this->params['url']['text'];
+
+        if($filter == null || $text == null) {
+            $this->redirect(['action' => 'index']);
+        }
+        $this->set('title', 'List of Transaction');
+
+        $filterConditions = $this->filterByConditions($filter, $text);
+        $this->paginate = [
+            'limit' => 20,
+            'order' => ['Transaction.transaction_id' => 'asc' ],
+            'conditions' => ['NOT' => ['Transaction.status' => '0'], $filterConditions]
+        ];
+        $transactions = $this->paginate('Transaction');
+        $this->set(['transactions' => $transactions, 'filters' => $this->getFilters()]);
+        return $this->render('index');
+    }
+
+    private function filterByConditions($filter, $text)
+    {
+        switch($filter) {
+        case 'item_name':
+            return ['Item.item_name LIKE' => '%' . $text . '%'];
+        case 'name':
+            return ['Customer.name LIKE' => '%' . $text . '%'];
+        case 'type':
+            return ['Transaction.type LIKE' => '%' . $text . '%'];
+        case 'payed':
+            return ['Transaction.payed' => 1];
+        default:
+            return [];
+        }
+    }
+
+    private function getFilters()
+    {
+        return [
+            'all' => 'Show All',
+            'item_name' => 'Item Name',
+            'name' => 'Winner',
+            'type' => 'Auction Type',
+            'payed' => 'Payment Status'
+        ];
     }
 }
