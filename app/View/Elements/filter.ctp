@@ -1,5 +1,5 @@
 <?php
-echo $this->Form->create('Transaction', ['action' => 'filter', 'controllers' => 'transactions', 'class' => 'form-inline', 'type' => 'get']);
+echo $this->Form->create($model, ['action' => $action, 'controllers' => $controllers, 'class' => 'form-inline', 'type' => 'get']);
 echo $this->Form->input('filter', [
     'label' => false,
     'class' => 'form-control',

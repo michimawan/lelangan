@@ -1,6 +1,8 @@
 <?php
 App::import('Lib', 'IdGenerator');
 App::import('Lib', 'Autocomplete');
+App::import('Factory', 'FilterFactory');
+App::import('Factory', 'ModelConditionFactory');
 
 class ItemsController extends AppController
 {
@@ -16,7 +18,7 @@ class ItemsController extends AppController
             'conditions' => ['NOT' => ['Item.status' => '0']]
         ];
         $items = $this->paginate('Item');
-        $this->set(['items' => $items]);
+        $this->set(['items' => $items, 'filters' => $this->getFilters()]);
 	}
 
 	public function add()
@@ -131,5 +133,40 @@ class ItemsController extends AppController
         } else {
             $this->redirect(array('action' => 'index'));
         }
+    }
+
+    public function filter()
+    {
+        $filter = $this->params['url']['filter'];
+        $text = $this->params['url']['text'];
+
+        if($filter == null || $text == null) {
+            $this->redirect(['action' => 'index']);
+        }
+        $this->set('title', 'List of Item');
+
+        $filterConditions = $this->getModelCondition($filter, $text);
+        $this->paginate = [
+            'limit' => 20,
+            'order' => ['Item.id' => 'asc' ],
+            'conditions' => ['NOT' => ['Item.status' => '0'], $filterConditions]
+        ];
+        $items = $this->paginate('Item');
+        $this->set(['items' => $items, 'filters' => $this->getFilters()]);
+        return $this->render('index');
+    }
+
+    private function getFilters()
+    {
+        return (new FilterFactory('Item'))->produce();
+    }
+
+    private function getModelCondition($filter, $text)
+    {
+        $params = [
+            'filter' => $filter,
+            'text' => $text
+        ];
+        return (new ModelConditionFactory('Item', $params))->produce();
     }
 }

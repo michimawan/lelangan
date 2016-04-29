@@ -1,5 +1,15 @@
 <!-- app/View/Items/index.ctp -->
 
+<?php
+$params = [
+    'action' => 'filter',
+    'controllers' => 'items',
+    'filters' => $filters,
+    'model' => 'Item'
+];
+echo $this->element('filter', $params);
+?>
+
 <div class="row">
     <div class="col-xs-3 col-md-2">
         <div class="btn-group-vertical" role="group">

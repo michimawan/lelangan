@@ -1,6 +1,8 @@
 <?php
 App::import('Lib', 'IdGenerator');
 App::import('Lib', 'Autocomplete');
+App::import('Factory', 'FilterFactory');
+App::import('Factory', 'ModelConditionFactory');
 
 class CustomersController extends AppController
 {
@@ -17,7 +19,7 @@ class CustomersController extends AppController
             'recursive' => 0
         ];
         $customers = $this->paginate('Customer');
-        $this->set(['customers' => $customers]);
+        $this->set(['customers' => $customers, 'filters' => $this->getFilters()]);
 	}
 
 	public function add()
@@ -115,5 +117,40 @@ class CustomersController extends AppController
         } else {
             $this->redirect(array('action' => 'index'));
         }
+    }
+
+    public function filter()
+    {
+        $filter = $this->params['url']['filter'];
+        $text = $this->params['url']['text'];
+
+        if($filter == null || $text == null) {
+            $this->redirect(['action' => 'index']);
+        }
+        $this->set('title', 'List of Customer');
+
+        $filterConditions = $this->getModelCondition($filter, $text);
+        $this->paginate = [
+            'limit' => 20,
+            'order' => ['Customer.id' => 'asc' ],
+            'conditions' => ['NOT' => ['Customer.status' => '0'], $filterConditions]
+        ];
+        $customers = $this->paginate('Customer');
+        $this->set(['customers' => $customers, 'filters' => $this->getFilters()]);
+        return $this->render('index');
+    }
+
+    private function getFilters()
+    {
+        return (new FilterFactory('Customer'))->produce();
+    }
+
+    private function getModelCondition($filter, $text)
+    {
+        $params = [
+            'filter' => $filter,
+            'text' => $text
+        ];
+        return (new ModelConditionFactory('Customer', $params))->produce();
     }
 }

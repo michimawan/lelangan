@@ -1,7 +1,13 @@
 <!-- app/View/Transactions/index.ctp -->
 
 <?php
-echo $this->element('filter', $filters);
+$params = [
+    'action' => 'filter',
+    'controllers' => 'transactions',
+    'filters' => $filters,
+    'model' => 'Transaction',
+];
+echo $this->element('filter', $params);
 ?>
 
 <div class="row">

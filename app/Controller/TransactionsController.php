@@ -2,6 +2,8 @@
 App::import('Lib', 'IdGenerator');
 App::import('Lib', 'Autocomplete');
 App::import('Lib', 'TransactionRepository');
+App::import('Factory', 'FilterFactory');
+App::import('Factory', 'ModelConditionFactory');
 
 class TransactionsController extends AppController
 {
@@ -200,7 +202,7 @@ class TransactionsController extends AppController
         }
         $this->set('title', 'List of Transaction');
 
-        $filterConditions = $this->filterByConditions($filter, $text);
+        $filterConditions = $this->getModelCondition($filter, $text);
         $this->paginate = [
             'limit' => 20,
             'order' => ['Transaction.transaction_id' => 'asc' ],
@@ -211,30 +213,17 @@ class TransactionsController extends AppController
         return $this->render('index');
     }
 
-    private function filterByConditions($filter, $text)
-    {
-        switch($filter) {
-        case 'item_name':
-            return ['Item.item_name LIKE' => '%' . $text . '%'];
-        case 'name':
-            return ['Customer.name LIKE' => '%' . $text . '%'];
-        case 'type':
-            return ['Transaction.type LIKE' => '%' . $text . '%'];
-        case 'payed':
-            return ['Transaction.payed' => 1];
-        default:
-            return [];
-        }
-    }
-
     private function getFilters()
     {
-        return [
-            'all' => 'Show All',
-            'item_name' => 'Item Name',
-            'name' => 'Winner',
-            'type' => 'Auction Type',
-            'payed' => 'Payment Status'
+        return (new FilterFactory('Transaction'))->produce();
+    }
+
+    private function getModelCondition($filter, $text)
+    {
+        $params = [
+            'filter' => $filter,
+            'text' => $text
         ];
+        return (new ModelConditionFactory('Transaction', $params))->produce();
     }
 }
