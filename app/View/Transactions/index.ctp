@@ -62,7 +62,7 @@ echo $this->element('filter', $params);
                 <td><?php echo $transaction['Customer']['name'];?></td>
                 <td><?php echo $transaction['Customer']['address'];?></td>
                 <td><?php echo $transaction['Transaction']['type'];?></td>
-                <td><?php echo $transaction['Transaction']['payed'] ? 'payed' : 'not yet';?></td>
+                <td><?php echo $transaction['Transaction']['payed'] ? 'payed' : 'not payed';?></td>
                 <td>
                 <?php
             // echo $this->Html->link(    "Edit",   array('action'=>'edit', $transaction['Transaction']['transaction_id']), array('class' => 'btn btn-info'));

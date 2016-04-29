@@ -73,7 +73,10 @@ class ModelConditionFactory
         case 'type':
             return ['Transaction.type LIKE' => '%' . $this->text . '%'];
         case 'payed':
-            return ['Transaction.payed' => 1];
+            if($this->text == 'payed')
+                return ['Transaction.payed' => 1];
+            else
+                return ['Transaction.payed' => 0];
         default:
             return [];
         }
