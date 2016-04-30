@@ -1,14 +1,12 @@
 <!-- app/View/Users/edit.ctp -->
 
 <div class="row">
-    <div class="col-xs-3 col-md-2">
-        <div class="btn-group-vertical" role="group">
-            <div class='btn-group' role='group'>
+    <div class="col-xs-12 col-md-12">
+        <div class="btn-group" role="group">
             <?php echo $this->Html->link( "List of User", array('action'=>'index'), array('class' => 'btn btn-default')); ?>
-            </div>
         </div>
     </div>
-    <div class="col-xs-12 col-md-10">
+    <div class="col-xs-12 col-md-12">
     <?php echo $this->Form->create('User'); ?>
             <h1><?php echo __('Edit Data User'); ?></h1>
             <?php 

@@ -1,7 +1,7 @@
 <!-- app/View/Payments/edit.ctp -->
 
 <div class="row">
-    <div class="col-xs-12 col-md-10">
+    <div class="col-xs-12 col-md-12">
         <?php echo $this->Form->create('Payment');?>
             <h1><?php echo __('Edit Payment'); ?></h1>
             <?php

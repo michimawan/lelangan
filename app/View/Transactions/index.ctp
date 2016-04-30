@@ -11,8 +11,8 @@ echo $this->element('filter', $params);
 ?>
 
 <div class="row">
-    <div class="col-xs-3 col-md-2">
-        <div class="btn-group-vertical" role="group">
+    <div class="col-xs-12 col-md-12">
+        <div class="btn-group" role="group">
             <?php
                 echo $this->Html->link( "Add Transaction", array('action'=>'add', 'common'), array('class' => 'btn btn-default'));
                 echo $this->Html->link( "Add Transaction 3", array('action'=>'add', 'selling'), array('class' => 'btn btn-default'));
@@ -20,7 +20,7 @@ echo $this->element('filter', $params);
             ?>
         </div>
     </div>
-    <div class="col-xs-12 col-md-10">
+    <div class="col-xs-12 col-md-12">
     <h1>List of Transaction(s)</h1>
     <div class='table-responsive'>
     <table class='table table-condensed table-hover table-stripped'>

@@ -1,7 +1,7 @@
 <!-- app/View/Users/add.ctp -->
 
 <div class="row">
-    <div class="col-xs-12 col-md-10">
+    <div class="col-xs-12 col-md-12">
         <?php echo $this->Form->create('User');?>
             <h1><?php echo __('Add User'); ?></h1>
             <?php

@@ -1,14 +1,12 @@
 <!-- app/View/Payments/index.ctp -->
 
 <div class="row">
-    <div class="col-xs-3 col-md-2">
-        <div class="btn-group-vertical" role="group">
-            <div class='btn-group' role='group'>
+    <div class="col-xs-12 col-md-12">
+        <div class="btn-group" role="group">
             <?php echo $this->Html->link( "Add Payment", array('action'=>'add'), array('class' => 'btn btn-default')); ?>
-            </div>
         </div>
     </div>
-    <div class="col-xs-12 col-md-10">
+    <div class="col-xs-12 col-md-12">
     <h1>List of Payment(s)</h1>
     <div class='table-responsive'>
     <table class='table table-condensed table-hover table-stripped'>
