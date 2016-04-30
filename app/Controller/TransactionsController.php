@@ -91,44 +91,64 @@ class TransactionsController extends AppController
     public function show($transaction_id = null)
     {
         if($transaction_id) {
-            try {
-                $this->Transaction->unbindModel(['hasMany' => ['Payment']]);
-                $transaction = $this->Transaction->find('all', [
-                    'conditions' => [
-                        'Transaction.transaction_id' => $transaction_id,
-                        'Transaction.status' => 1,
-                        'Payment.status' => 1,
-                    ],
-                    'fields' => [
-                        'Transaction.id', 'Transaction.transaction_id', 'Transaction.bid_price', 'Transaction.payed', 'Transaction.updated_at', 'Transaction.created_at',
-                        'Customer.name', 'Customer.address',
-                        'Payment.payment_id', 'Payment.pay', 'Payment.created_at',
-                        'Item.item_id', 'Item.item_name'
-                    ],
-                    'joins' => [
-                        [
-                            'table' => 'payments',
-                            'alias' => 'Payment',
-                            'type' => 'LEFT',
-                            'conditions' => ['Transaction.id = Payment.transaction_id']
-                        ]
-                    ],
-                ]);
-
-                if($transaction)
-                    return $this->set(['transactions' => $transaction]);
-                else {
-                    $this->Session->setFlash("No Payment for '$transaction_id' yet", 'flashmessage', ['class' => 'warning']);
-                    $this->redirect(['action'=>'index']);
-                }
-            } catch (NotFoundException $ex) {
-                $this->Session->setFlash('Transaction not found', 'flashmessage', ['class' => 'warning']);
+            $transaction = $this->getTransactionData($transaction_id);
+            if($transaction)
+                return $this->set(['transactions' => $transaction]);
+            else {
+                $this->Session->setFlash("No Payment for '$transaction_id' yet", 'flashmessage', ['class' => 'warning']);
                 $this->redirect(['action'=>'index']);
             }
         } else {
             $this->Session->setFlash('Transaction not found', 'flashmessage', ['class' => 'warning']);
             $this->redirect(['action'=>'index']);
         }
+    }
+
+    public function to_print($transaction_id = null)
+    {
+        if($transaction_id) {
+            $this->set('title', 'Print Transaction');
+            $transaction = $this->getTransactionData($transaction_id);
+            if($transaction) {
+                $this->set(['transaction' => $transaction]);
+                $this->layout = 'print';
+                $this->render('print');
+            } else {
+                $this->Session->setFlash("Can't print '$transaction_id' yet", 'flashmessage', ['class' => 'warning']);
+                $this->redirect(['action'=>'index']);
+            }
+        } else {
+            $this->Session->setFlash('Transaction not found', 'flashmessage', ['class' => 'warning']);
+            $this->redirect(['action'=>'index']);
+        }
+    }
+
+    private function getTransactionData($transaction_id)
+    {
+        $this->Transaction->unbindModel(['hasMany' => ['Payment']]);
+        $transaction = $this->Transaction->find('all', [
+            'conditions' => [
+                'Transaction.transaction_id' => $transaction_id,
+                'Transaction.status' => 1,
+                'Payment.status' => 1,
+            ],
+            'fields' => [
+                'Transaction.id', 'Transaction.transaction_id', 'Transaction.bid_price', 'Transaction.payed', 'Transaction.updated_at', 'Transaction.created_at',
+                'Customer.name', 'Customer.address',
+                'Payment.payment_id', 'Payment.pay', 'Payment.created_at',
+                'Item.item_id', 'Item.item_name'
+            ],
+            'joins' => [
+                [
+                    'table' => 'payments',
+                    'alias' => 'Payment',
+                    'type' => 'LEFT',
+                    'conditions' => ['Transaction.id = Payment.transaction_id']
+                ]
+            ],
+        ]);
+
+        return $transaction;
     }
 
     public function isAuthorized($user)

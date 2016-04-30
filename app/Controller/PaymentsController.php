@@ -29,7 +29,7 @@ class PaymentsController extends AppController
 
 			if($paymentRepo->store()) {
 				$this->Session->setFlash('Success adding new payment', 'flashmessage', ['class' => 'success']);
-				return $this->redirect(['action' => 'index']);
+                return $this->redirect(['controller' => 'transactions', 'action' => 'to_print', $this->request->data['Transaction']['transaction_id']]);
 			}
 			$this->Session->setFlash('Failed to add payment');
 		} 

@@ -1,10 +1,9 @@
 <!-- app/View/Transactions/show.ctp -->
 <div class="row">
     <div class="col-xs-3 col-md-2">
-        <div class="btn-group-vertical" role="group">
-            <div class='btn-group' role='group'>
+        <div class="btn-group" role="group">
             <?php echo $this->Html->link( "Back", array('action'=>'index'), array('class' => 'btn btn-default')); ?>
-            </div>
+            <?php echo $this->Html->link( "Print", array('action'=>'to_print', $this->params['pass'][0]), array('class' => 'btn btn-default')); ?>
         </div>
     </div>
 </div>

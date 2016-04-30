@@ -67,6 +67,8 @@ echo $this->element('filter', $params);
                 <?php
             // echo $this->Html->link(    "Edit",   array('action'=>'edit', $transaction['Transaction']['transaction_id']), array('class' => 'btn btn-info'));
                     echo $this->Form->postLink(    "Delete", array('action'=>'delete', $transaction['Transaction']['transaction_id']), array('class' => 'btn btn-danger', 'confirm'=>'Are you sure want to delete '.$transaction['Transaction']['transaction_id']));
+                    if($transaction['Transaction']['payed'])
+                    echo $this->Html->link( "Print", array('action'=>'to_print', $transaction['Transaction']['transaction_id']), array('class' => 'btn btn-default'));
                 ?>
                 </td>
             </tr>

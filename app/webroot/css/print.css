@@ -1,0 +1,59 @@
+.print {
+  width: 95%;
+  margin: 10px auto;
+}
+.print--header {
+  display: block;
+  width: 100%;
+}
+
+.receipt--title {
+  display: inline-block;
+  width: 50%;
+}
+
+.receipt--id {
+  display: inline-block;
+  float: right;
+  width: 50%;
+  padding-top: 7px;
+}
+
+.print--subheader {
+  display: block;
+  width: 100%;
+}
+
+.print--subheader--left {
+  float: left;
+  display: inline-block;
+  width: 50%;
+}
+
+.print--subheader--right {
+  float: right;
+  display: inline-block;
+  width: 50%;
+}
+
+.signature {
+  display: block;
+  width: 100%;
+  padding: 100px 0 0;
+}
+
+.leader--signature {
+  display: inline-block;
+  width: 40%;
+  padding: 10px;
+  border-top: solid 1px #000;
+  text-align: center;
+}
+.secretary--signature {
+  display: inline-block;
+  float: right;
+  width: 40%;
+  padding: 10px;
+  border-top: solid 1px #000;
+  text-align: center;
+}
