@@ -15,6 +15,7 @@ echo $this->element('filter', $params);
         <div class="btn-group" role="group">
             <?php
                 echo $this->Html->link( "Add Transaction", array('action'=>'add', 'common'), array('class' => 'btn btn-default'));
+                echo $this->Html->link( "Add Transaction 2", array('action'=>'add', 'special'), array('class' => 'btn btn-default'));
                 echo $this->Html->link( "Add Transaction 3", array('action'=>'add', 'selling'), array('class' => 'btn btn-default'));
                 echo $this->Html->link( "Add Transaction 4", array('action'=>'add', 'giving'), array('class' => 'btn btn-default'));
             ?>
@@ -65,7 +66,7 @@ echo $this->element('filter', $params);
                 <td><?php echo $transaction['Transaction']['payed'] ? 'payed' : 'not payed';?></td>
                 <td>
                 <?php
-            // echo $this->Html->link(    "Edit",   array('action'=>'edit', $transaction['Transaction']['transaction_id']), array('class' => 'btn btn-info'));
+                    // echo $this->Html->link(    "Edit",   array('action'=>'edit', $transaction['Transaction']['transaction_id']), array('class' => 'btn btn-info'));
                     echo $this->Form->postLink(    "Delete", array('action'=>'delete', $transaction['Transaction']['transaction_id']), array('class' => 'btn btn-danger', 'confirm'=>'Are you sure want to delete '.$transaction['Transaction']['transaction_id']));
                     if($transaction['Transaction']['payed'])
                     echo $this->Html->link( "Print", array('action'=>'to_print', $transaction['Transaction']['transaction_id']), array('class' => 'btn btn-default'));
