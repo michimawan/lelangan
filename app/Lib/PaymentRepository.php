@@ -122,12 +122,10 @@ class PaymentRepository
 
 	private function generate_payment_id()
 	{
-		$pid = 'PID';
+		$prefix = 'PID';
         $length = 8;
-		$idgenerator = new IdGenerator('Payment', 'payment_id', $length);
+		$idgenerator = new IdGenerator('Payment', 'payment_id', $length, $prefix);
 
-		$missing_code = str_pad($idgenerator->get_free_number(), $length, '0', STR_PAD_LEFT);
-
-		return $pid.$missing_code;
+        return $idgenerator->get_free_code();
 	}
 }

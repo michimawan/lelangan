@@ -5,11 +5,12 @@ class IdGenerator
 {
 	private $uses = array();
 
-	public function __construct($model, $field, $length = 4)
+	public function __construct($model, $field, $length = 4, $prefix = null)
 	{
 		$this->uses[] = $model;
 		$this->field = $field;
         $this->length = $length;
+        $this->prefix = $prefix;
 
 		App::import('Model', $this->uses[0]);
 	}
@@ -21,7 +22,7 @@ class IdGenerator
 		return $data;
 	}
 
-	public function get_free_number()
+	public function get_free_code()
 	{
 		$missing_number = 1;
 		$data = $this->getDbData();
@@ -36,6 +37,8 @@ class IdGenerator
 			$missing_number++;
 		}
 
-		return $missing_number;
+        $missing_code = str_pad($missing_number, $this->length, '0', STR_PAD_LEFT);
+
+        return $this->prefix.$missing_code;
 	}
 }

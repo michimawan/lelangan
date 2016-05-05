@@ -103,13 +103,11 @@ class ItemsController extends AppController
 
 	private function generate_item_id()
 	{
-		$iid = 'IID';
+		$prefix = 'IID';
         $length = 4;
-		$idgenerator = new IdGenerator('Item', 'item_id', $length);
+		$idgenerator = new IdGenerator('Item', 'item_id', $length, $prefix);
 
-		$missing_code = str_pad($idgenerator->get_free_number(), $length, '0', STR_PAD_LEFT);
-
-		return $iid.$missing_code;
+        return $idgenerator->get_free_code();
 	}
 
     public function get_item()

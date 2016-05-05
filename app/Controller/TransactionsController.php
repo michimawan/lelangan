@@ -173,13 +173,10 @@ class TransactionsController extends AppController
 
     private function generate_transaction_id()
     {
-        $pid = 'TID';
+        $prefix = 'TID';
         $length = 8;
-        $idgenerator = new IdGenerator('Transaction', 'transaction_id', $length);
-
-        $missing_code = str_pad($idgenerator->get_free_number(), $length, '0', STR_PAD_LEFT);
-
-        return $pid.$missing_code;
+        $idgenerator = new IdGenerator('Transaction', 'transaction_id', $length, $prefix);
+        return $idgenerator->get_free_code();
     }
 
     public function get_transactions()
