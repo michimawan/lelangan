@@ -1,7 +1,7 @@
 <?php
 App::import('Lib', 'IdGenerator');
 App::import('Lib', 'Autocomplete');
-App::import('Lib', 'TransactionRepository');
+App::import('Repository', 'TransactionRepository');
 App::import('Factory', 'FilterFactory');
 App::import('Factory', 'ModelConditionFactory');
 
@@ -31,12 +31,19 @@ class TransactionsController extends AppController
 
             $saveStatus = $transactionRepo->save();
             if($saveStatus['status']) {
-                $this->Session->setFlash('Success adding new transaction', 'flashmessage', ['class' => 'success']);
+                $message = 'Success adding new transaction. ';
+                $additionalMessage =
+                    count($saveStatus['failed']) > 0 ?
+                        'There are ' . $this->getFailedSavedCustomerCount($saveStatus) . ' transaction failed to save' : '';
+
+                $this->Session->setFlash($message . $additionalMessage, 'flashmessage', ['class' => 'success']);
                 return $this->redirect(['action' => 'index']);
             } else {
-                $this->Session->setFlash('Failed to save transaction, there are ' . 
-                    (count($saveStatus['failed']) - $data['customer']) . ' transaction failed to save'
-                );
+                $message = 'Failed to save transaction. ';
+                $additionalMessage =
+                    count($saveStatus['failed']) > 0 ?
+                        'There are ' . $this->getFailedSavedCustomerCount($saveStatus) . ' transaction failed to save' : '';
+                $this->Session->setFlash($message . $additionalMessage, 'flashmessage', ['class' => 'danger']);
             }
         }
 
@@ -246,5 +253,10 @@ class TransactionsController extends AppController
             'text' => $text
         ];
         return (new ModelConditionFactory('Transaction', $params))->produce();
+    }
+
+    private function getFailedSavedCustomerCount($data)
+    {
+        return ($data['customer'] - count($data['failed']));
     }
 }

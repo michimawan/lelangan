@@ -1,6 +1,6 @@
 <?php
 App::uses('Model', 'Model');
-App::uses('PrepareModel', 'TransactionType');
+App::import('TransactionType', 'PrepareModel');
 
 class NormalTransaction
 {
@@ -18,17 +18,18 @@ class NormalTransaction
     {
         $transactionModel = new $this->uses[0]();
         $data = [];
+        $dataSource = $transactionModel->getDataSource();
+        $dataSource->begin();
         try {
-            $transactionModel->getDataSource();
             $transaction = (new PrepareModel(1, $this->transaction))->run();
             $transaction = $transactionModel->save($transaction);
-            $transactionModel->commit();
+            $dataSource->commit();
 
             $data['status'] = true;
             $data['customer'] = 1;
-            $data['failed'] = '';
+            $data['failed'] = [];
         } catch(Exception $e) {
-            $transactionModel->rollback();
+            $dataSource->rollback();
             $data['status'] = false;
             $data['customer'] = 1;
             $data['failed'] = [$this->transaction['customer_id']];

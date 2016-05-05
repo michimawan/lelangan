@@ -1,7 +1,7 @@
 <?php
 App::import('Lib', 'IdGenerator');
 App::import('Lib', 'Autocomplete');
-App::import('Lib', 'PaymentRepository');
+App::import('Repository', 'PaymentRepository');
 
 class PaymentsController extends AppController
 {
