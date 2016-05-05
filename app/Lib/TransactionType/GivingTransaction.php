@@ -20,10 +20,24 @@ class GivingTransaction
         $item = $itemModel->findByItemId('IID0001');
 
         $transactionModel = new $this->uses[1]();
-        $this->transaction['item_id'] = $item['Item']['id'];
-        $transaction = (new PrepareModel(1, $this->transaction))->run();
-        $transaction = $transactionModel->save($transaction);
+        $data = [];
+        try {
+            $transactionModel->getDataSource();
+            $this->transaction['item_id'] = $item['Item']['id'];
+            $transaction = (new PrepareModel(1, $this->transaction))->run();
+            $transaction = $transactionModel->save($transaction);
+            $transactionModel->commit();
 
-        return $item['Item']['id'] && $transaction['Transaction']['id'];
+            $data['status'] = true;
+            $data['customer'] = 1;
+            $data['failed'] = '';
+        } catch(Exception $e) {
+            $transactionModel->rollback();
+            $data['status'] = false;
+            $data['customer'] = 1;
+            $data['failed'] = [$this->transaction['customer_id']];
+        }
+
+        return $data;
     }
 }

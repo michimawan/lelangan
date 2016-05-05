@@ -17,8 +17,23 @@ class NormalTransaction
     public function save()
     {
         $transactionModel = new $this->uses[0]();
-        $transaction = (new PrepareModel(1, $this->transaction))->run();
-        $transaction = $transactionModel->save($transaction);
-        return $transaction['Transaction']['id'];
+        $data = [];
+        try {
+            $transactionModel->getDataSource();
+            $transaction = (new PrepareModel(1, $this->transaction))->run();
+            $transaction = $transactionModel->save($transaction);
+            $transactionModel->commit();
+
+            $data['status'] = true;
+            $data['customer'] = 1;
+            $data['failed'] = '';
+        } catch(Exception $e) {
+            $transactionModel->rollback();
+            $data['status'] = false;
+            $data['customer'] = 1;
+            $data['failed'] = [$this->transaction['customer_id']];
+        }
+
+        return $data;
     }
 }

@@ -29,11 +29,15 @@ class TransactionsController extends AppController
 
             $transactionRepo = new TransactionRepository($this->request->data);
 
-            if($transactionRepo->save()) {
+            $saveStatus = $transactionRepo->save();
+            if($saveStatus['status']) {
                 $this->Session->setFlash('Success adding new transaction', 'flashmessage', ['class' => 'success']);
                 return $this->redirect(['action' => 'index']);
+            } else {
+                $this->Session->setFlash('Failed to save transaction, there are ' . 
+                    (count($saveStatus['failed']) - $data['customer']) . ' transaction failed to save'
+                );
             }
-            $this->Session->setFlash('Failed to add transaction');
         }
 
         if(!$type)
