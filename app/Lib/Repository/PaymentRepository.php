@@ -9,8 +9,6 @@ class PaymentRepository
 
     public function __construct($data = [])
     {
-        // debug($data);
-        // $this->_stop();
         $this->payment = isset($data['Payment']) ? $data['Payment'] : [];
         $this->transaction = isset($data['Transaction']) ? $data['Transaction'] : [];
 

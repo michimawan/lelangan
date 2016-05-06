@@ -61,9 +61,10 @@ class TransactionsController extends AppController
                 $this->Session->setFlash('No transaction choosen', 'flashmessage', ['class' => 'warning']);
             }
             try {
-                $transaction = $this->get_data_by_transaction_id($transaction_id);
-                $this->Transaction->id = $transaction['Transaction']['id'];
-                if ($this->Transaction->saveField('status', 0)) {
+                $transactionRepo = new TransactionRepository($this->request->data);
+
+                $deleteStatus = $transactionRepo->delete($transaction_id);
+                if ($deleteStatus) {
                     $this->Session->setFlash('Transaction data has been deleted', 'flashmessage', ['class' => 'success']);
                 }
             } catch (NotFoundException $ex) {
@@ -71,32 +72,6 @@ class TransactionsController extends AppController
             }
         }
         $this->redirect(['action'=>'index']);
-    }
-
-    public function edit($transaction_id = null)
-    {
-        $this->set('title', 'Edit Transaction Data');
-        if($this->request->is('post') || $this->request->is('put')) {
-            $transaction = $this->get_data_by_transaction_id($transaction_id);
-            if($this->Transaction->save($this->request->data)){
-                $this->Session->setFlash('Transaction data has been changed', 'flashmessage', ['class' => 'success']);
-            } else {
-                $this->Session->setFlash('Transaction data has not changed', 'flashmessage', ['class' => 'warning']);
-            }
-            $this->redirect(['action'=>'index']);
-        } else {
-            if($transaction_id) {
-                try {
-                    $this->request->data = $this->get_data_by_transaction_id($transaction_id);
-                } catch (NotFoundException $ex) {
-                    $this->Session->setFlash('Transaction not found', 'flashmessage', ['class' => 'warning']);
-                    $this->redirect(['action'=>'index']);
-                }
-            } else {
-                $this->Session->setFlash('Transaction not found', 'flashmessage', ['class' => 'warning']);
-                $this->redirect(['action'=>'index']);
-            }
-        }
     }
 
     public function show($transaction_id = null)
@@ -170,16 +145,6 @@ class TransactionsController extends AppController
             }
 
         return parent::isAuthorized($user);
-    }
-
-    private function get_data_by_transaction_id($transaction_id)
-    {
-        $transaction = $this->Transaction->findByTransactionId($transaction_id);
-
-        if(!$transaction)
-            throw new NotFoundException ('Transaction not found', 404);
-
-        return $transaction;
     }
 
     private function generate_transaction_id()
