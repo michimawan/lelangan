@@ -155,36 +155,6 @@ class TransactionsController extends AppController
         return $idgenerator->get_free_code();
     }
 
-    public function get_transactions()
-    {
-        $this->autoRender = false;
-        if($this->request->is('ajax')){
-            $term = $this->params['url']['term'];
-            $term = 'TID';
-
-            $conditions = [
-                'Transaction.transaction_id LIKE' => '%'.$term.'%',
-                'Transaction.status' => 1,
-                'Transaction.payed' => 0
-            ];
-            $fields = ['Transaction.id',
-                'Transaction.transaction_id',
-                'Transaction.customer_id',
-                'Transaction.bid_price',
-                'Customer.name'
-            ];
-
-            $transactions = (new Autocomplete('Transaction', $fields, $conditions))->get();
-            if($transactions){
-                echo json_encode($transactions);
-            } else {
-                echo "no";
-            }
-        } else {
-            $this->redirect(array('action' => 'index'));
-        }
-    }
-
     public function filter()
     {
         $filter = $this->params['url']['filter'];

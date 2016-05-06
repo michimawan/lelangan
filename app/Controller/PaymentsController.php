@@ -10,14 +10,7 @@ class PaymentsController extends AppController
 
 	public function index()
 	{
-		$this->set('title', 'List of Payment');
-		$this->paginate = [
-            'limit' => 20,
-            'order' => ['Payment.payment_id' => 'asc' ],
-            'conditions' => ['Payment.status' => 1 ],
-        ];
-        $payments = $this->paginate('Payment');
-        $this->set(['payments' => $payments]);
+        $this->redirect(['controller' => 'transactions', 'action' => 'index']);
 	}
 
 	public function add()
@@ -32,7 +25,11 @@ class PaymentsController extends AppController
                 return $this->redirect(['controller' => 'transactions', 'action' => 'to_print', $this->request->data['Transaction']['transaction_id']]);
 			}
 			$this->Session->setFlash('Failed to add payment');
-		} 
+		}
+
+        $transaction = $this->getTransactionFromPrevUrl();
+
+        $this->set(['transaction' => $transaction]);
 	}
 
 	public function delete($payment_id)
@@ -51,13 +48,14 @@ class PaymentsController extends AppController
             	$this->Session->setFlash('Payment not found', 'flashmessage', ['class' => 'warning']);
             }
         }
-		$this->redirect(['action'=>'index']);
+        $this->redirect(['controller' => 'transactions', 'action' => 'index']);
 	}
 
 	public function edit($payment_id = null)
 	{
 		$this->set('title', 'Edit Payment Data');
 		if($this->request->is('post') || $this->request->is('put')) {
+            $transaction_id = $this->request->data['Transaction']['transaction_id'];
             $paymentRepo = new PaymentRepository($this->request->data);
 
             if($paymentRepo->update()){
@@ -65,7 +63,7 @@ class PaymentsController extends AppController
             } else {
             	$this->Session->setFlash('Payment data has not changed', 'flashmessage', ['class' => 'warning']);
             }
-            $this->redirect(['action'=>'index']);
+            $this->redirect(['controller' => 'transactions', 'action' => 'show', $transaction_id]);
 		} else {
 			if($payment_id) {
 				try {
@@ -96,9 +94,46 @@ class PaymentsController extends AppController
 		$condition = ['payment_id' => $payment_id];
         $payment = $this->Payment->findByPaymentId($payment_id);
 
-        if(!$payment) 
+        if(!$payment)
         	throw new NotFoundException ('payment not found', 404);
 
         return $payment;
 	}
+
+    private function get_transactions($transaction_id)
+    {
+        $conditions = [
+            'Transaction.transaction_id LIKE' => '%'.$transaction_id.'%',
+            'Transaction.status' => 1,
+            'Transaction.payed' => 0
+        ];
+        $fields = ['Transaction.id',
+            'Transaction.transaction_id',
+            'Transaction.customer_id',
+            'Transaction.bid_price',
+            'Customer.name'
+        ];
+
+        return (new Autocomplete('Transaction', $fields, $conditions))->get();
+    }
+
+    private function getTransactionFromPrevUrl()
+    {
+        $current_url = $this->request->here();
+
+        $matches = [];
+        preg_match("/(TID[\d]*)/", $current_url, $matches);
+
+        if(count($matches) == 0)
+            $this->redirect(['controller' => 'transactions', 'action' => 'index']);
+
+        $transaction_id = $matches[0];
+
+        $transaction = $this->get_transactions($transaction_id);
+
+        if(count($transaction) == 0)
+            $this->redirect(['controller' => 'transactions', 'action' => 'index']);
+
+        return $transaction;
+    }
 }

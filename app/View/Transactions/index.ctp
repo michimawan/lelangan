@@ -65,11 +65,14 @@ echo $this->element('filter', $params);
                 <td><?php echo $transaction['Transaction']['type'];?></td>
                 <td><?php echo $transaction['Transaction']['payed'] ? 'payed' : 'not payed';?></td>
                 <td>
+                    <div class="btn-group" role="group">
                 <?php
+                    echo $this->Html->link( "Pay", array('controller' => 'payments', 'action'=>'add', $transaction['Transaction']['transaction_id']), array('class' => 'btn btn-primary'));
                     echo $this->Form->postLink(    "Delete", array('action'=>'delete', $transaction['Transaction']['transaction_id']), array('class' => 'btn btn-danger', 'confirm'=>'Are you sure want to delete '.$transaction['Transaction']['transaction_id']));
                     if($transaction['Transaction']['payed'])
                     echo $this->Html->link( "Print", array('action'=>'to_print', $transaction['Transaction']['transaction_id']), array('class' => 'btn btn-default'));
                 ?>
+                    </div>
                 </td>
             </tr>
             <?php endforeach; ?>

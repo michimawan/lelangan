@@ -8,6 +8,7 @@
             echo $this->Form->input('Payment.transaction_id', [
                 'type' => 'text',
                 'required',
+                'value' => $transaction[0]['Transaction']['id'],
                 'class' => 'form-control',
                 'div' => ['class' => 'form-group hidden']
             ]);
@@ -15,12 +16,14 @@
                 'type' => 'text',
                 'label' => 'Transaction Code',
                 'required',
+                'value' => $transaction[0]['Transaction']['transaction_id'],
                 'class' => 'form-control',
                 'div' => ['class' => 'form-group']
             ]);
             echo $this->Form->input('Payment.customer_id', [
                 'type' => 'number',
                 'required',
+                'value' => $transaction[0]['Transaction']['customer_id'],
                 'class' => 'form-control',
                 'div' => ['class' => 'form-group hidden']
             ]);
@@ -28,6 +31,7 @@
                 'type' => 'text',
                 'required',
                 'readonly',
+                'value' => $transaction[0]['Customer']['name'],
                 'label' => 'Customer Name',
                 'class' => 'form-control',
                 'div' => ['class' => 'form-group']
@@ -35,6 +39,7 @@
             echo $this->Form->input('Transaction.bid_price', [
                 'type' => 'number',
                 'label' => 'Bid Price',
+                'value' => $transaction[0]['Transaction']['bid_price'],
                 'min' => '0',
                 'max' => '10000000',
                 'readonly',
@@ -51,23 +56,5 @@
 <?php
     echo $this->Html->script(['jquery-ui.min.js']);
     echo $this->Html->css(['jquery-ui.min.css']);
-    echo $this->element('autocomplete_transaction', [
-        'firstId' => 'TransactionTransactionId',
-        'secondId' => json_encode([
-            'PaymentTransactionId',
-            'PaymentCustomerId',
-            'TransactionCustomerName',
-            'TransactionBidPrice',
-        ]),
-        'model' => json_encode(['Transaction', 'Customer']),
-        'controller' => 'transactions',
-        'action' => 'get_transactions',
-        'fields' => json_encode(['id',
-            'transaction_id',
-            'customer_id',
-            'name',
-            'bid_price',
-        ]),
-    ]);
     echo $this->element('auto_counting');
 ?>

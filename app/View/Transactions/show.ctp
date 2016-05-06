@@ -4,6 +4,7 @@
         <div class="btn-group" role="group">
             <?php echo $this->Html->link( "Back", array('action'=>'index'), array('class' => 'btn btn-default')); ?>
             <?php echo $this->Html->link( "Print", array('action'=>'to_print', $this->params['pass'][0]), array('class' => 'btn btn-default')); ?>
+            <?php echo $this->Html->link( "Pay", array('controller' => 'payments', 'action'=>'add', $this->params['pass'][0]), array('class' => 'btn btn-default')); ?>
         </div>
     </div>
 </div>
@@ -37,13 +38,14 @@
                 <th>No.</th>
                 <th>Payment ID</th>
                 <th>Amount</th>
+                <th>Action</th>
             </thead>
             <tbody>
             <?php
             if(!$transactions){
             ?>
             <tr>
-                <td colspan=9>There is no transaction yet</td>
+                <td colspan=4>There is no transaction yet</td>
             </tr>
             <?php
             }
@@ -57,6 +59,12 @@
                 <td><?php echo $count; ?></td>
                 <td><?php echo $transaction['Payment']['payment_id']; ?></td>
                 <td><?php echo $transaction['Payment']['pay'];?></td>
+                <td>
+                <?php
+                    echo $this->Html->link(    "Edit",   array('controller' => 'payments', 'action'=>'edit', $transaction['Payment']['payment_id']), array('class' => 'btn btn-info'));
+                    echo $this->Form->postLink(    "Delete", array('controller' => 'payments', 'action'=>'delete', $transaction['Payment']['payment_id']), array('class' => 'btn btn-danger', 'confirm'=>'Are you sure want to delete '.$transaction['Payment']['payment_id']));
+                ?>
+                </td>
             </tr>
             <?php endforeach; ?>
             <?php unset($transaction); } ?>

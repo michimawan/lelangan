@@ -17,7 +17,6 @@
                 <th><?php echo $this->Paginator->sort('Payment.payment_id', 'Payment ID', array('direction' => 'asc'));?>  </th>
                 <th><?php echo $this->Paginator->sort('Customer.name', 'Customer Name');?>  </th>
                 <th><?php echo $this->Paginator->sort('Payment.pay', 'Payed');?></th>
-                <th>Actions</th>
             </tr>
         </thead>
         <tbody>
@@ -41,12 +40,6 @@
                 <td><?php echo $payment['Payment']['payment_id'];?></td>
                 <td><?php echo $payment['Customer']['name'];?></td>
                 <td><?php echo $payment['Payment']['pay']?></td>
-                <td>
-                <?php
-                    echo $this->Html->link(    "Edit",   array('action'=>'edit', $payment['Payment']['payment_id']), array('class' => 'btn btn-info'));
-                    echo $this->Form->postLink(    "Delete", array('action'=>'delete', $payment['Payment']['payment_id']), array('class' => 'btn btn-danger', 'confirm'=>'Are you sure want to delete '.$payment['Payment']['payment_id']));
-                ?>
-                </td>
             </tr>
             <?php endforeach; ?>
             <?php unset($payment); } ?>
